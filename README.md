@@ -6,3 +6,4 @@ Interactive grid engine for life calendars, trackers, journals, and game maps.
 
 - [Architecture](docs/architecture.md)
 - [Technical specifications](docs/technical_specifications.md)
+- [Development plan](docs/development_plan.md)
