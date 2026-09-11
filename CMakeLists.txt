@@ -11,8 +11,10 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(QT NAMES Qt6 Qt5 COMPONENTS Core Quick REQUIRED)
-find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Core Quick REQUIRED)
+find_package(QT NAMES Qt6 Qt5 COMPONENTS Core Quick Test REQUIRED)
+find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Core Quick Test REQUIRED)
+
+include(CTest)
 
 set(PROJECT_SOURCES
         src/main.cpp
@@ -58,4 +60,17 @@ set_target_properties(EventGrid PROPERTIES
 if(QT_VERSION_MAJOR EQUAL 6)
     qt_import_qml_plugins(EventGrid)
     qt_finalize_executable(EventGrid)
+endif()
+
+if(BUILD_TESTING AND NOT ANDROID)
+    add_executable(EventGridQmlResourcesTest
+        tests/qml_resources_test.cpp
+        qml.qrc
+    )
+
+    target_link_libraries(EventGridQmlResourcesTest
+        PRIVATE Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Test
+    )
+
+    add_test(NAME EventGridQmlResourcesTest COMMAND EventGridQmlResourcesTest)
 endif()

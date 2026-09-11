@@ -3,6 +3,8 @@ import QtQuick 2.15
 Item {
     id: root
 
+    signal createMapRequested()
+
     readonly property color backgroundColor: "#101218"
     readonly property color surfaceColor: "#1B1F2A"
     readonly property color primaryColor: "#89B4FA"
@@ -41,7 +43,7 @@ Item {
             text: qsTr("Visualize habits, events, and progress as interactive maps.")
             color: root.secondaryTextColor
             font.pixelSize: 16
-            wrapMode: Text.WordWrapплане
+            wrapMode: Text.WordWrap
         }
 
     }
@@ -113,21 +115,9 @@ Item {
 
                 anchors.fill: parent
                 cursorShape: Qt.PointingHandCursor
-                onClicked: hint.visible = true
+                onClicked: root.createMapRequested()
             }
         }
 
-        Text {
-            id: hint
-
-            anchors.horizontalCenter: parent.horizontalCenter
-            visible: false
-            width: parent.width
-            horizontalAlignment: Text.AlignHCenter
-            wrapMode: Text.WordWrap
-            text: qsTr("Map creation will be available in the next development step.")
-            color: root.secondaryTextColor
-            font.pixelSize: 13
-        }
     }
 }
