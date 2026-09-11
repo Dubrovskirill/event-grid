@@ -2,8 +2,14 @@ import QtQuick 2.15
 import QtQuick.Window 2.15
 
 Window {
-    width: 640
-    height: 480
+    width: 960
+    height: 640
+    minimumWidth: 420
+    minimumHeight: 560
     visible: true
-    title: qsTr("Hello World")
+    title: qsTr("Event Grid")
+
+    MapsScreen {
+        anchors.fill: parent
+    }
 }

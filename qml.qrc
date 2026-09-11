@@ -1,5 +1,6 @@
 <RCC>
     <qresource prefix="/">
         <file>qml/Main.qml</file>
+        <file>qml/MapsScreen.qml</file>
     </qresource>
 </RCC>
