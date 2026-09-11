@@ -46,9 +46,13 @@ semantic zoom и сложная аналитика.
 
 - [x] Реализовать `GridCoordinate` и `GridRect`, включая inclusive-границы и
   возможность использовать координату как ключ `QHash`.
-- [ ] Реализовать value objects: `MapId`, `CellId`, `TagId`, `RegionId`,
+- [x] Реализовать value objects: `MapId`, `CellId`, `TagId`, `RegionId`,
   `GridDimensions`.
-- [ ] Реализовать `Map`, `MapConfiguration`, `Cell`, `Tag` и необходимые enum.
+- [x] Реализовать необходимые enum и `MapConfiguration` с проверкой базовой
+  валидности.
+- [x] Реализовать сущность `Map`.
+- [x] Реализовать сущность `Cell`.
+- [x] Реализовать сущность `Tag`.
 - [ ] Зафиксировать инварианты: валидные размеры карты, уникальные координаты,
   непустое имя тега, допустимые переходы состояния клетки.
 - [ ] Реализовать in-memory repositories.

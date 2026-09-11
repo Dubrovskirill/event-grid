@@ -299,10 +299,7 @@ struct MapConfiguration
 
     GridType gridType;
 
-    qint64 rows;
-    qint64 columns;
-
-    bool infinite;
+    GridDimensions dimensions;
 
     CellUnit unit;
 
@@ -311,6 +308,10 @@ struct MapConfiguration
     MapMode mode;
 };
 ```
+
+`GridType` — единственный источник истины для типа сетки. В частности,
+бесконечная карта определяется через `gridType == GridType::Infinite`; отдельный
+изменяемый флаг `infinite` не хранится.
 
 Например:
 
@@ -3898,4 +3899,3 @@ Multiple Devices
 ```
 
 не потребует переписывать доменную модель и UI-логику.
-

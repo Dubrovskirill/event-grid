@@ -11,14 +11,18 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(QT NAMES Qt6 Qt5 COMPONENTS Core Quick Test REQUIRED)
-find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Core Quick Test REQUIRED)
+find_package(QT NAMES Qt6 Qt5 COMPONENTS Core Gui Quick Test REQUIRED)
+find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Core Gui Quick Test REQUIRED)
 
 include(CTest)
 
-add_library(eventgrid_domain INTERFACE)
-target_include_directories(eventgrid_domain INTERFACE src)
-target_link_libraries(eventgrid_domain INTERFACE Qt${QT_VERSION_MAJOR}::Core)
+add_library(eventgrid_domain
+    src/domain/cell/Cell.cpp
+    src/domain/map/Map.cpp
+    src/domain/tag/Tag.cpp
+)
+target_include_directories(eventgrid_domain PUBLIC src)
+target_link_libraries(eventgrid_domain PUBLIC Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Gui)
 
 set(PROJECT_SOURCES
         src/main.cpp
@@ -87,4 +91,54 @@ if(BUILD_TESTING AND NOT ANDROID)
     )
 
     add_test(NAME EventGridDomainTest COMMAND EventGridDomainTest)
+
+    add_executable(EventGridCoreTypesTest
+        tests/domain/common/core_types_test.cpp
+    )
+
+    target_link_libraries(EventGridCoreTypesTest
+        PRIVATE eventgrid_domain Qt${QT_VERSION_MAJOR}::Test
+    )
+
+    add_test(NAME EventGridCoreTypesTest COMMAND EventGridCoreTypesTest)
+
+    add_executable(EventGridMapConfigurationTest
+        tests/domain/map/map_configuration_test.cpp
+    )
+
+    target_link_libraries(EventGridMapConfigurationTest
+        PRIVATE eventgrid_domain Qt${QT_VERSION_MAJOR}::Test
+    )
+
+    add_test(NAME EventGridMapConfigurationTest COMMAND EventGridMapConfigurationTest)
+
+    add_executable(EventGridMapTest
+        tests/domain/map/map_test.cpp
+    )
+
+    target_link_libraries(EventGridMapTest
+        PRIVATE eventgrid_domain Qt${QT_VERSION_MAJOR}::Test
+    )
+
+    add_test(NAME EventGridMapTest COMMAND EventGridMapTest)
+
+    add_executable(EventGridCellTest
+        tests/domain/cell/cell_test.cpp
+    )
+
+    target_link_libraries(EventGridCellTest
+        PRIVATE eventgrid_domain Qt${QT_VERSION_MAJOR}::Test
+    )
+
+    add_test(NAME EventGridCellTest COMMAND EventGridCellTest)
+
+    add_executable(EventGridTagTest
+        tests/domain/tag/tag_test.cpp
+    )
+
+    target_link_libraries(EventGridTagTest
+        PRIVATE eventgrid_domain Qt${QT_VERSION_MAJOR}::Test
+    )
+
+    add_test(NAME EventGridTagTest COMMAND EventGridTagTest)
 endif()

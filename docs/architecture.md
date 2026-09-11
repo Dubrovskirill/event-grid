@@ -226,20 +226,21 @@ public:
     Map(
         MapId id,
         QString name,
-        GridType gridType,
-        MapMode mode
+        MapConfiguration configuration,
+        QDateTime createdAt,
+        QDateTime updatedAt
     );
 
     MapId id() const;
 
     const QString& name() const;
-    void rename(QString name);
+    bool rename(QString name, QDateTime changedAt);
 
     GridType gridType() const;
     MapMode mode() const;
 
     const MapConfiguration& configuration() const;
-    void updateConfiguration(MapConfiguration configuration);
+    bool updateConfiguration(MapConfiguration configuration, QDateTime changedAt);
 
     QDateTime createdAt() const;
     QDateTime updatedAt() const;
@@ -274,10 +275,7 @@ struct MapConfiguration
     GridType gridType = GridType::FixedRectangle;
     MapMode mode = MapMode::Free;
 
-    qint64 rows = 0;
-    qint64 columns = 0;
-
-    bool infinite = false;
+    GridDimensions dimensions;
 
     CellUnit cellUnit = CellUnit::Custom;
 
@@ -286,6 +284,10 @@ struct MapConfiguration
     qint64 initialCompletedCells = 0;
 };
 ```
+
+`GridType` — единственный источник истины для типа сетки. В частности,
+бесконечная карта определяется через `gridType == GridType::Infinite`; отдельный
+изменяемый флаг `infinite` не хранится.
 
 Можно расширить:
 
@@ -319,7 +321,13 @@ public:
     Cell(
         CellId id,
         MapId mapId,
-        GridCoordinate coordinate
+        GridCoordinate coordinate,
+        CellState state,
+        QVector<TagId> tagIds,
+        QString note,
+        QDateTime eventDate,
+        QDateTime createdAt,
+        QDateTime updatedAt
     );
 
     CellId id() const;
@@ -332,20 +340,20 @@ public:
     bool isCompleted() const;
     bool isLocked() const;
 
-    void complete();
-    void reset();
-    void lock();
-    void unlock();
+    bool complete(QDateTime changedAt);
+    bool reset(QDateTime changedAt);
+    bool lock(QDateTime changedAt);
+    bool unlock(QDateTime changedAt);
 
     const QString& note() const;
-    void setNote(QString note);
+    bool setNote(QString note, QDateTime changedAt);
 
     const QDateTime& eventDate() const;
-    void setEventDate(QDateTime date);
+    bool setEventDate(QDateTime date, QDateTime changedAt);
 
     const QVector<TagId>& tagIds() const;
-    void addTag(TagId id);
-    void removeTag(TagId id);
+    bool addTag(TagId id, QDateTime changedAt);
+    bool removeTag(TagId id, QDateTime changedAt);
 
     QDateTime createdAt() const;
     QDateTime updatedAt() const;
@@ -411,8 +419,8 @@ public:
     QString name() const;
     QColor color() const;
 
-    void rename(QString name);
-    void setColor(QColor color);
+    bool rename(QString name);
+    bool setColor(QColor color);
 };
 ```
 
@@ -2963,4 +2971,3 @@ Render cache
 ```
 
 Карта должна быть **логически огромной, но физически sparse**, а Renderer должен работать преимущественно с **видимой областью**.
-
