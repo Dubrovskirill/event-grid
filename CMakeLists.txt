@@ -16,6 +16,10 @@ find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Core Quick Test REQUIRED)
 
 include(CTest)
 
+add_library(eventgrid_domain INTERFACE)
+target_include_directories(eventgrid_domain INTERFACE src)
+target_link_libraries(eventgrid_domain INTERFACE Qt${QT_VERSION_MAJOR}::Core)
+
 set(PROJECT_SOURCES
         src/main.cpp
         qml.qrc
@@ -73,4 +77,14 @@ if(BUILD_TESTING AND NOT ANDROID)
     )
 
     add_test(NAME EventGridQmlResourcesTest COMMAND EventGridQmlResourcesTest)
+
+    add_executable(EventGridDomainTest
+        tests/domain/common/grid_geometry_test.cpp
+    )
+
+    target_link_libraries(EventGridDomainTest
+        PRIVATE eventgrid_domain Qt${QT_VERSION_MAJOR}::Test
+    )
+
+    add_test(NAME EventGridDomainTest COMMAND EventGridDomainTest)
 endif()

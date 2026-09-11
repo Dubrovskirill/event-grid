@@ -42,9 +42,11 @@ semantic zoom и сложная аналитика.
 **Критерий готовности:** приложение открывает список карт; тесты запускаются
 отдельно от приложения.
 
-## Этап 2 — Домен и use cases `[ ]`
+## Этап 2 — Домен и use cases `[-]`
 
-- [ ] Реализовать value objects: `MapId`, `GridCoordinate`, `GridRect`,
+- [x] Реализовать `GridCoordinate` и `GridRect`, включая inclusive-границы и
+  возможность использовать координату как ключ `QHash`.
+- [ ] Реализовать value objects: `MapId`, `CellId`, `TagId`, `RegionId`,
   `GridDimensions`.
 - [ ] Реализовать `Map`, `MapConfiguration`, `Cell`, `Tag` и необходимые enum.
 - [ ] Зафиксировать инварианты: валидные размеры карты, уникальные координаты,
